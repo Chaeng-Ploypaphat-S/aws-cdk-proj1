@@ -32,7 +32,7 @@ export class AwsCdkProj1Stack extends Stack {
       // runtime: Runtime.NODEJS_20_X,
       runtime: Runtime.PYTHON_3_10,
       memorySize: 128,
-      handler: 'listBuckets.main',
+      handler: 'listLambdas.main',
       code: Code.fromAsset(join(__dirname, '../lambdas')),
       environment: {
         NAME: 'Julia',
@@ -45,14 +45,25 @@ export class AwsCdkProj1Stack extends Stack {
     // grant the Lambda function R/W permissions to the table
     usersTable.grantReadWriteData(handler);
     filesBucket.grantReadWrite(handler);
+
+    // attach an inline policy to the Lambda's execution 
+    // role to allow listing all S3 buckets
     const listBucketsPolicy = iam.PolicyStatement.fromJson({
       Effect: 'Allow',
       Action: ['s3:ListAllMyBuckets'],
       Resource: ['*'],
     });
+
+    const listLambdasPolicy = iam.PolicyStatement.fromJson({
+      Effect: 'Allow',
+      Action: ['lambda:ListFunctions'],
+      Resource: ['*'],
+    });
+
+
     handler.role?.attachInlinePolicy(
-      new iam.Policy(this, 'list-resources-policy', {
-        statements: [listBucketsPolicy],
+      new iam.Policy(this, 'list-resources', {
+        statements: [listBucketsPolicy, listLambdasPolicy],
       }),
     );
 
