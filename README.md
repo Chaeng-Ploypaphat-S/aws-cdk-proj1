@@ -9,11 +9,8 @@ Hands-on AWS CDK learning repository.
 - Worked with AWS services including S3 and DynamoDB
 - Strengthened understanding of AWS infrastructure provisioning, monitoring, and deployment best practices
 
-✅ Tech
+✅ Learning
 - AWS CDK
 - AWS CloudFormation
-- TypeScript
-- Serverless Architecture
-- Infrastructure as Code (IaC)
 - AWS Lambda
 - DynamoDB
